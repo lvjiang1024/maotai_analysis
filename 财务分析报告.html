@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贵州茅台财务分析报告 2023-2025</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F5E6C8;
+    --red: #C41E3A;
+    --navy: #1B2A4A;
+    --slate: #2D3A52;
+    --bg: #F7F4EF;
+    --white: #FFFFFF;
+    --text: #2C2416;
+    --text-secondary: #6B5E4A;
+    --green: #2E7D32;
+    --border: #E0D5C1;
+    --shadow: 0 4px 24px rgba(27, 42, 74, 0.08);
+    --shadow-lg: 0 12px 48px rgba(27, 42, 74, 0.12);
+  }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #243456 40%, #1a1a2e 100%);
+    color: white;
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(196,30,58,0.06) 0%, transparent 50%);
+    animation: heroGlow 8s ease-in-out infinite;
+  }
+  @keyframes heroGlow {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(2%, 1%); }
+  }
+  .hero-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #fff 0%, #C9A84C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+  }
+  .hero-date {
+    color: rgba(255,255,255,0.45);
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  .kpi-section { margin-top: -40px; position: relative; z-index: 2; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .kpi-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .kpi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 56px rgba(27, 42, 74, 0.16); }
+  .kpi-card.primary { border-left: 4px solid var(--gold); }
+  .kpi-card.accent { border-left: 4px solid var(--red); }
+  .kpi-label { font-size: 13px; color: var(--text-secondary); letter-spacing: 1px; margin-bottom: 8px; }
+  .kpi-value { font-size: 36px; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+  .kpi-unit { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
+  .kpi-change { font-size: 13px; margin-top: 8px; font-weight: 500; }
+  .kpi-change.down { color: var(--red); }
+  .kpi-change.up { color: var(--green); }
+
+  .section { padding: 60px 0; }
+  .section-header { text-align: center; margin-bottom: 48px; }
+  .section-number { font-size: 12px; color: var(--gold); letter-spacing: 3px; margin-bottom: 8px; }
+  .section-title { font-size: 32px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .section-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--red)); margin: 0 auto; border-radius: 2px; }
+  .section-desc { color: var(--text-secondary); font-size: 15px; margin-top: 12px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  .chart-block {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+    border: 1px solid var(--border);
+  }
+  .chart-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  .chart-img { width: 100%; border-radius: 8px; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+  }
+  .data-table thead th {
+    background: var(--navy);
+    color: white;
+    padding: 14px 16px;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .data-table thead th:first-child { border-radius: 10px 0 0 0; text-align: left; }
+  .data-table thead th:last-child { border-radius: 0 10px 0 0; }
+  .data-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  .data-table tbody td:first-child { text-align: left; font-weight: 600; color: var(--navy); }
+  .data-table tbody tr:hover { background: var(--gold-light); }
+  .data-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+  .data-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+  .tag-down {
+    display: inline-block;
+    background: #FDE8EC;
+    color: var(--red);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tag-up {
+    display: inline-block;
+    background: #E8F5E9;
+    color: var(--green);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .analysis-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .analysis-card h3 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .analysis-card li { color: var(--text-secondary); font-size: 14px; line-height: 1.9; margin-bottom: 6px; }
+  .analysis-card ul { padding-left: 18px; }
+
+  .exec-summary {
+    background: linear-gradient(135deg, var(--navy), var(--slate));
+    color: white;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .exec-summary::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .exec-summary h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--gold);
+    position: relative;
+    z-index: 1;
+  }
+  .exec-summary p {
+    font-size: 15px;
+    line-height: 2;
+    color: rgba(255,255,255,0.85);
+    position: relative;
+    z-index: 1;
+  }
+  .exec-summary .highlight { color: var(--gold); font-weight: 600; }
+
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), var(--red));
+  }
+  .timeline-item { position: relative; margin-bottom: 28px; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+  .timeline-year { font-size: 13px; color: var(--gold); font-weight: 700; letter-spacing: 2px; margin-bottom: 4px; }
+  .timeline-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px 0;
+    font-size: 13px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .analysis-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+    .section-title { font-size: 24px; }
+    .kpi-value { font-size: 28px; }
+  }
+
+  @media print {
+    body { background: white; }
+    .hero { padding: 40px 0 30px; }
+    .chart-block, .analysis-card, .kpi-card { box-shadow: none; break-inside: avoid; }
+    .section { padding: 30px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">FINANCIAL ANALYSIS REPORT</div>
+    <h1>贵州茅台<br>财务分析报告</h1>
+    <p class="hero-subtitle">基于 2023—2025 年年度报告数据的深度财务分析</p>
+    <p class="hero-date">报告生成日期：2026 年 05 月 29 日 ｜ 数据来源：上市公司年度报告</p>
+  </div>
+</header>
+
+<div class="container kpi-section">
+  <div class="kpi-grid">
+    <div class="kpi-card primary">
+      <div class="kpi-label">2025 年营业收入</div>
+      <div class="kpi-value">1,688<span class="kpi-unit"> 亿元</span></div>
+      <div class="kpi-change down">↓ 1.21% 同比下滑</div>
+    </div>
+    <div class="kpi-card primary">
+      <div class="kpi-label">2025 年归母净利润</div>
+      <div class="kpi-value">823<span class="kpi-unit"> 亿元</span></div>
+      <div class="kpi-change down">↓ 4.53% 同比下滑</div>
+    </div>
+    <div class="kpi-card accent">
+      <div class="kpi-label">2025 年 ROE</div>
+      <div class="kpi-value">32.53<span class="kpi-unit">%</span></div>
+      <div class="kpi-change down">↓ 3.49pp 同比下滑</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 01</div>
+      <div class="section-title">执行摘要</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exec-summary">
+      <h3>核心观点</h3>
+      <p>贵州茅台在数据覆盖期内呈现<span class="highlight">"先增后调"</span>的财务走势。
+        2024 年为近年来业绩高峰，营收突破 <span class="highlight">1,709 亿元</span>，净利润达 <span class="highlight">862 亿元</span>。
+        进入 2025 年，受宏观经济承压与消费结构调整影响，公司营收同比下滑 <span class="highlight">1.21%</span>，
+        净利润同比下滑 <span class="highlight">4.53%</span>，ROE 从 36.02% 回落至 <span class="highlight">32.53%</span>。
+        尽管如此，公司总资产规模突破 <span class="highlight">3,038 亿元</span>，净资产达 <span class="highlight">2,446 亿元</span>，资产负债表依然稳健。</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 02</div>
+      <div class="section-title">核心财务指标趋势</div>
+      <div class="section-line"></div>
+      <p class="section-desc">营业收入、净利润、总资产、净资产历年变化一览</p>
+    </div>
+
+    <div class="chart-block full-width">
+      <div class="chart-title">年度财务指标趋势图</div>
+      <img class="chart-img" src="charts/年度财务指标趋势图.png" alt="年度财务指标趋势">
+    </div>
+
+    <div class="chart-block" style="overflow-x: auto;">
+      <div class="chart-title">年度财务数据明细</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>年份</th>
+            <th>营业收入</th>
+            <th>归母净利润</th>
+            <th>总资产</th>
+            <th>净资产</th>
+            <th>每股收益</th>
+            <th>ROE</th>
+            <th>变动趋势</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2023 年</td>
+            <td>1,476.94 亿</td>
+            <td>747.34 亿</td>
+            <td>2,727.00 亿</td>
+            <td>2,156.69 亿</td>
+            <td>59.49 元</td>
+            <td>34.19%</td>
+            <td><span style="color:#999">基准年</span></td>
+          </tr>
+          <tr>
+            <td>2024 年</td>
+            <td>1,708.99 亿</td>
+            <td>862.28 亿</td>
+            <td>2,989.45 亿</td>
+            <td>2,331.06 亿</td>
+            <td>68.64 元</td>
+            <td>36.02%</td>
+            <td><span class="tag-up">+15.71%</span><span class="tag-up">+15.38%</span><span class="tag-up">+9.62%</span><span class="tag-up">+8.09%</span><span class="tag-up">+15.38%</span><span class="tag-up">+5.35%</span></td>
+          </tr>
+          <tr>
+            <td>2025 年</td>
+            <td>1,688.38 亿</td>
+            <td>823.20 亿</td>
+            <td>3,038.35 亿</td>
+            <td>2,446.38 亿</td>
+            <td>65.66 元</td>
+            <td>32.53%</td>
+            <td><span class="tag-down">-1.21%</span><span class="tag-down">-4.53%</span><span class="tag-up">+1.64%</span><span class="tag-up">+4.95%</span><span class="tag-down">-4.34%</span><span class="tag-down">-9.69%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 03</div>
+      <div class="section-title">增长率分析</div>
+      <div class="section-line"></div>
+      <p class="section-desc">各财务指标年度同比增长率对比，揭示增长动能变化</p>
+    </div>
+
+    <div class="chart-block full-width">
+      <div class="chart-title">财务指标同比增长率</div>
+      <img class="chart-img" src="charts/财务指标增长率.png" alt="财务指标增长率">
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">最新年度增长率明细</div>
+      <table class="data-table">
+        <thead><tr><th>指标</th><th>同比增长率</th></tr></thead>
+        <tbody><tr><td>营业收入</td><td><span class="tag-down">-1.21%</span></td></tr><tr><td>归母净利润</td><td><span class="tag-down">-4.53%</span></td></tr><tr><td>总资产</td><td><span class="tag-up">+1.64%</span></td></tr><tr><td>净资产</td><td><span class="tag-up">+4.95%</span></td></tr><tr><td>每股收益 (EPS)</td><td><span class="tag-down">-4.34%</span></td></tr><tr><td>净资产收益率 (ROE)</td><td><span class="tag-down">-9.69%</span></td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <h3>2024 年：增长高峰</h3>
+        <ul>
+              <li><strong>营收增长 15.71%</strong> — 受益于提价效应与渠道改革红利</li>
+              <li><strong>净利润增长 15.38%</strong> — 利润增速与营收增速匹配</li>
+              <li><strong>ROE 提升至 36.02%</strong> — 资本回报效率达近年峰值</li>
+              <li><strong>EPS 增长 15.38%</strong> — 每股收益同步提升</li>
+            </ul>
+      </div>
+      <div class="analysis-card">
+        <h3>2025 年：增速转负</h3>
+        <ul>
+              <li><strong>营收下滑 1.21%</strong> — 终端动销放缓，渠道库存压力显现</li>
+              <li><strong>净利润下滑 4.53%</strong> — 利润降幅大于营收降幅，利润率承压</li>
+              <li><strong>ROE 下滑 -3.49pp</strong> — 净资产增长但利润收缩，双重因素拉低 ROE</li>
+              <li><strong>EPS 下滑 4.34%</strong> — 每股收益跟随利润同步回落</li>
+            </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 04</div>
+      <div class="section-title">盈利能力与估值指标</div>
+      <div class="section-line"></div>
+      <p class="section-desc">ROE 与 EPS 走势分析，评估股东回报质量</p>
+    </div>
+
+    <div class="chart-block full-width">
+      <div class="chart-title">ROE 与 EPS 变化趋势</div>
+      <img class="chart-img" src="charts/财务比率分析.png" alt="财务比率分析">
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">历年 ROE / EPS 速览</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2023</div>
+          <div class="timeline-text">ROE 34.19% / EPS 59.49 元 — 盈利能力处于行业绝对领先水平</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-text">ROE 36.02% / EPS 68.64 元 — 盈利能力处于行业绝对领先水平</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2025</div>
+          <div class="timeline-text">ROE 32.53% / EPS 65.66 元 — 盈利能力处于行业绝对领先水平</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 05</div>
+      <div class="section-title">指标相关性分析</div>
+      <div class="section-line"></div>
+      <p class="section-desc">各财务维度之间的统计学关联，洞察业务驱动关系</p>
+    </div>
+
+    <div class="chart-block full-width">
+      <div class="chart-title">财务指标相关性矩阵</div>
+      <img class="chart-img" src="charts/财务指标相关性矩阵.png" alt="财务指标相关性矩阵">
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">PART 06</div>
+      <div class="section-title">风险提示与展望</div>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <h3>宏观风险</h3>
+        <ul>
+          <li><strong>宏观经济承压</strong> — 经济增速放缓可能抑制终端消费需求</li>
+          <li><strong>行业政策调控</strong> — 税收、环保等行业政策变化可能影响盈利空间</li>
+          <li><strong>市场竞争加剧</strong> — 行业竞争格局变化可能影响市场份额</li>
+        </ul>
+      </div>
+      <div class="analysis-card">
+        <h3>公司层面关注点</h3>
+        <ul>
+          <li><strong>渠道库存</strong> — 关注经销商库存水平和动销情况</li>
+          <li><strong>成本控制</strong> — 原材料及人工成本上升对毛利率的影响</li>
+          <li><strong>增长质量</strong> — 收入增长是否可持续，利润转化效率如何</li>
+          <li><strong>分红政策</strong> — 利润分配政策对股东回报的影响</li>
+        </ul>
+      </div>
+      <div class="analysis-card">
+        <h3>积极因素</h3>
+        <ul>
+          <li><strong>品牌壁垒</strong> — 品牌价值和市场地位构筑核心护城河</li>
+          <li><strong>资产负债表稳健</strong> — 净资产 2,446 亿，抗风险能力强</li>
+          <li><strong>现金流充沛</strong> — 经营性现金流稳定，经营质量高</li>
+          <li><strong>长期成长空间</strong> — 产品结构升级和市场拓展存在增量空间</li>
+        </ul>
+      </div>
+      <div class="analysis-card">
+        <h3>2026 年展望</h3>
+        <ul>
+          <li>关注 Q1 季报能否止住下滑趋势，验证 2025 年是否为阶段性底部</li>
+          <li>若宏观消费复苏信号明确，公司作为行业龙头具备较强修复动能</li>
+          <li>中长期看，产品结构升级和市场拓展仍是核心增长引擎</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>贵州茅台财务分析报告 ｜ 数据区间 2023—2025 ｜ 由 AI 辅助生成</p>
+    <p style="margin-top: 8px;">本报告基于公开年报数据，仅供参考，不构成投资建议</p>
+  </div>
+</footer>
+
+</body>
+</html>
