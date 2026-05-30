@@ -1,0 +1,28 @@
+# PDF 财报源文件（体积大，不提交）
+财报/*.pdf
+*.pdf
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# 临时文件
+/tmp_mgmt.json
+/tmp_moutai_*.json
+*.json
+
+# 保留配置文件
+!config.json
+# 保留数据文件
+!贵州茅台_quarterly_data.json
+!贵州茅台_mgmt_data.json
+
+# 旧输出（已被新报告替代）
+财务分析报告.html
+财务分析报告.md
+茅台财务数据.xlsx
+财务数据.xlsx
+charts/
