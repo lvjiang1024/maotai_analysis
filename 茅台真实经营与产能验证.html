@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贵州茅台 · 真实经营还原与产能验证（2021–2025）</title>
+<style>
+  :root{--gold:#b8860b;--gold-l:#d4af37;--wine:#7a1f2b;--ink:#1c1c1e;--muted:#6b6b70;--bg:#f7f5f0;--card:#fff;--line:#e7e3d8;--green:#2e7d5b;--red:#c0392b;--amber:#c77d0a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 80px}
+  header{background:linear-gradient(135deg,#7a1f2b,#3d0f16);color:#fff;padding:52px 20px 44px;text-align:center;border-bottom:4px solid var(--gold-l)}
+  header .kicker{letter-spacing:.32em;font-size:12px;color:var(--gold-l);text-transform:uppercase;margin-bottom:14px}
+  header h1{font-size:30px;font-weight:800;letter-spacing:1px;margin-bottom:10px}
+  header .sub{font-size:14.5px;opacity:.86;max-width:640px;margin:0 auto}
+  header .meta{margin-top:16px;font-size:12.5px;opacity:.7}
+  section{margin-top:46px}
+  h2.sec{font-size:21px;font-weight:800;border-left:5px solid var(--gold);padding-left:14px;margin-bottom:8px}
+  .sec-sub{color:var(--muted);font-size:13.5px;margin-bottom:18px;padding-left:19px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:18px;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+  th,td{padding:10px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#faf7ef;color:var(--wine);font-weight:700;border-bottom:2px solid var(--gold-l)}
+  tbody tr:hover{background:#fcfaf4}
+  tfoot td{font-weight:700;border-top:2px solid var(--gold-l);background:#faf7ef}
+  .pos{color:var(--green);font-weight:600}.neg{color:var(--red);font-weight:600}
+  .method{background:#faf7ef;border:1px dashed var(--gold-l);border-radius:10px;padding:14px 18px;font-size:13.5px;color:#5a4a2a;margin-bottom:16px}
+  .method code{background:#fff;padding:2px 7px;border-radius:5px;border:1px solid var(--line);font-size:13px;color:var(--wine)}
+  .note{background:#faf7ef;border-left:4px solid var(--gold);padding:13px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#5a4a2a;margin-top:14px}
+  .warn{background:#fdf1ee;border-left:4px solid var(--red);color:#7a2318}
+  .good{background:#eef7f1;border-left:4px solid var(--green);color:#1f5c41}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:6px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .kpi .n{font-size:23px;font-weight:800;color:var(--wine)}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:4px}
+  .quote{font-style:italic;color:#5a4a2a;background:#faf7ef;padding:14px 18px;border-radius:10px;font-size:13.5px;border-left:3px solid var(--gold);margin-top:14px}
+  .ans{background:#fff;border:2px solid var(--wine);border-radius:12px;padding:18px 22px;margin-top:14px}
+  .ans h4{color:var(--wine);font-size:16px;margin-bottom:8px}
+  .ans p{font-size:14px}
+  .foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);text-align:center}
+  .foot .disc{background:#fdf1ee;border:1px solid #f3d3cc;color:#7a2318;padding:13px 16px;border-radius:10px;text-align:left;margin-bottom:14px;font-size:12px;line-height:1.7}
+  @media(max-width:560px){header h1{font-size:23px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">还原真实经营 · 唐朝《表3-15》方法复刻</div>
+  <h1>贵州茅台：真实销售还原 与 产能／75%规则验证</h1>
+  <div class="sub">对照《价值投资实战手册》"财报隐藏（释放）收入"方法，用现金流与合同负债还原 2021–2025 的真实销售；并以基酒产量检验"当年出酒≈五年前基酒×75%"。</div>
+  <div class="meta">股票代码 600519.SH　|　报告日期 2026-07-25　|　数据来源：公司 2016–2025 年度报告（本项目自动提取）</div>
+</header>
+
+<div class="wrap">
+
+<!-- 一、隐藏/释放收入 -->
+<section>
+  <h2 class="sec">一、财报隐藏（释放）收入 · 2021–2025 复刻</h2>
+  <div class="sec-sub">书中原表（表3-15）针对 2008–2013；此处用同一逻辑还原最近五年。</div>
+
+  <div class="method">
+    <b>老唐原始方法：</b><code>当年实际含税销售 = 销售商品收到的现金 + 应收款项增加</code> → 折算不含税（÷1.13）→ 与报表营业收入对比。<br>
+    正数＝当年"蓄水"（实际卖得多、报表少记，<b>隐藏</b>）；负数＝当年"放水"（报表多记、实际少收，<b>释放</b>）。<br>
+    对今日茅台，"蓄水池"就是<b>合同负债（预收款）</b>——经销商先打款、后提货，其余额增减即隐藏/释放的直接来源。故以下先用合同负债法（口径最干净），再用销售收现法交叉验证。</div>
+
+  <h4 style="margin:6px 0 10px;color:var(--wine)">① 合同负债（预收款）"蓄水池"法</h4>
+  <div class="card">
+    <table>
+      <thead><tr><th>年份</th><th>销售收现(合并,亿)</th><th>合同负债期末(亿)</th><th>当年Δ合同负债</th><th>折不含税</th><th>报表营收(亿)</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>2020</td><td>1,070.2</td><td>133.2</td><td>—</td><td>—</td><td>—</td><td class="muted">基期</td></tr>
+        <tr><td>2021</td><td>1,193.2</td><td>127.2</td><td class="neg">−6.0</td><td class="neg">−5.3</td><td>1,061.9</td><td>基本持平</td></tr>
+        <tr><td>2022</td><td>1,406.9</td><td>154.7</td><td class="pos">+27.5</td><td class="pos">+24.4</td><td>1,241.0</td><td><b style="color:var(--green)">蓄水(隐藏)</b></td></tr>
+        <tr><td>2023</td><td>1,637.0</td><td>141.3</td><td class="neg">−13.5</td><td class="neg">−11.9</td><td>1,476.9</td><td><b style="color:var(--red)">放水(释放)</b></td></tr>
+        <tr><td>2024</td><td>1,826.5</td><td>95.9</td><td class="neg">−45.3</td><td class="neg">−40.1</td><td>1,709.0</td><td><b style="color:var(--red)">大幅放水</b></td></tr>
+        <tr><td>2025</td><td>1,839.9</td><td>80.1</td><td class="neg">−15.9</td><td class="neg">−14.0</td><td>1,688.4</td><td><b style="color:var(--red)">放水(释放)</b></td></tr>
+      </tbody>
+      <tfoot><tr><td>五年净额</td><td colspan="2">合同负债 133.2 → 80.1</td><td class="neg" colspan="2">净放水 −53.2 亿</td><td colspan="2">"水库"抽干近四成</td></tr></tfoot>
+    </table>
+  </div>
+
+  <h4 style="margin:14px 0 10px;color:var(--wine)">② 销售收现法交叉验证（老唐原式，暂略应收）</h4>
+  <div class="card">
+    <table>
+      <thead><tr><th>年份</th><th>真实不含税销售≈销售收现÷1.13</th><th>报表营业收入</th><th>隐藏(+)/释放(−)</th></tr></thead>
+      <tbody>
+        <tr><td>2021</td><td>1,055.9</td><td>1,061.9</td><td class="neg">−6.0</td></tr>
+        <tr><td>2022</td><td>1,245.1</td><td>1,241.0</td><td class="pos">+4.1</td></tr>
+        <tr><td>2023</td><td>1,448.7</td><td>1,476.9</td><td class="neg">−28.2</td></tr>
+        <tr><td>2024</td><td>1,616.3</td><td>1,709.0</td><td class="neg">−92.7</td></tr>
+        <tr><td>2025</td><td>1,628.2</td><td>1,688.4</td><td class="neg">−60.2</td></tr>
+      </tbody>
+    </table>
+    <div class="note">两种口径方向完全一致：<b>2023–2025 连续三年"放水"</b>，报表营收高于真实回款。销售收现法数字更大，因其还叠加了增值税缴纳节奏、应收票据（2024 年末约 20 亿）等时点扰动；合同负债法（−12 / −40 / −14 亿）是最纯粹的口径。应收票据／应收款项融资合计约占营收 1%，且 2021 年起披露口径变动，此处从简，不改变结论。</div>
+  </div>
+
+  <div class="note warn"><b>结论与 2008–2013 恰好相反。</b>当年（2008–2011）茅台在旺季<b>隐藏</b>约 50 亿收入以备寒冬；而 2022 年蓄水一次后，<b>2023–2025 连续三年靠抽干预收款"水库"（累计放水约 53 亿）来平滑、支撑报表营收</b>。这意味着：报表上 2024 年 +15%、2025 年 −1.2% 的营收，<b>真实经营的降温比报表更早、更明显</b>——2024 年真实增速已明显低于报表，2025 年真实收入的下滑幅度也大于报表的 −1.2%。这与"合同负债从 154.7 亿一路降到 80.1 亿"的水库见底相互印证，是估值时必须扣减的"报表美颜"。</div>
+</section>
+
+<!-- 二、基酒产量 -->
+<section>
+  <h2 class="sec">二、过去五年基酒产量与销量</h2>
+  <div class="sec-sub">茅台酒需五年周期（当年基酒 → 五年后成品）。注意：2021 年起年报只披露"酒类"合计成品产销量，不再单列茅台酒吨数。</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>年份</th><th>茅台酒基酒(吨)</th><th>茅台酒+系列酒<br>总基酒(吨)</th><th>成品酒生产量<br>(酒类合计,吨)</th><th>成品酒销售量<br>(酒类合计,吨)</th><th>期末库存(吨)</th></tr></thead>
+      <tbody>
+        <tr><td>2016</td><td>39,313</td><td>—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+        <tr><td>2017</td><td>42,829</td><td>—</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+        <tr><td>2018</td><td>49,700</td><td>70,200</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+        <tr><td>2019</td><td>~49,900</td><td>75,000</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+        <tr><td>2020</td><td>50,200</td><td>75,200</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+        <tr><td>2021</td><td class="muted">未披露</td><td class="muted">未披露</td><td>84,721</td><td>66,439</td><td>260,746</td></tr>
+        <tr><td>2022</td><td class="muted">未披露</td><td class="muted">未披露</td><td>91,886</td><td>68,176</td><td>276,623</td></tr>
+        <tr><td>2023</td><td class="muted">未披露</td><td class="muted">未披露</td><td>100,141</td><td>73,274</td><td>293,790</td></tr>
+        <tr><td>2024</td><td class="muted">未披露</td><td class="muted">未披露</td><td>104,385</td><td>83,333</td><td>310,008</td></tr>
+        <tr><td>2025</td><td class="muted">未披露</td><td class="muted">未披露</td><td>116,124</td><td>85,104</td><td>339,978</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>数据说明：</b>茅台酒基酒 2016–2018、2020 为年报明确披露（"生产茅台酒基酒 X 万吨"）；2019 年报仅披露茅台酒及系列酒合计 7.50 万吨，茅台酒基酒 ~4.99 万吨系由 2020 年"同比+0.63%"倒推。<b>2021 年起，公司不再在年报中单独披露基酒实际产量，成品产销量也只给"酒类"合计（茅台酒＋系列酒）</b>——这是做本项检验的最大障碍。</div>
+  </div>
+</section>
+
+<!-- 三、75%规则 -->
+<section>
+  <h2 class="sec">三、"当年出酒 ≈ 五年前基酒 × 75%" 检验</h2>
+  <div class="sec-sub">季克良："每年出厂的茅台酒，只占五年前生产酒的 75% 左右"——用数据检验这一比例是否仍成立。</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>销售年</th><th>对应五年前</th><th>茅台酒基酒(T−5)</th><th>×75% 理论可售</th><th>当年成品销量<br>(酒类合计)</th><th>销量 ÷ (基酒×75%)</th></tr></thead>
+      <tbody>
+        <tr><td>2021</td><td>2016</td><td>39,313</td><td>29,485</td><td>66,439</td><td class="neg">225%</td></tr>
+        <tr><td>2022</td><td>2017</td><td>42,829</td><td>32,122</td><td>68,176</td><td class="neg">212%</td></tr>
+        <tr><td>2023</td><td>2018</td><td>49,700</td><td>37,275</td><td>73,274</td><td class="neg">197%</td></tr>
+        <tr><td>2024</td><td>2019</td><td>~49,900</td><td>37,425</td><td>83,333</td><td class="neg">223%</td></tr>
+        <tr><td>2025</td><td>2020</td><td>50,200</td><td>37,650</td><td>85,104</td><td class="neg">226%</td></tr>
+      </tbody>
+    </table>
+    <div class="note warn"><b>直接对比"对不上"——但这不是因为规则失效，而是口径不可比：</b>当年"成品销量"是<b>茅台酒＋系列酒合计</b>，而 75% 规则只针对需五年陈酿的<b>茅台酒</b>。系列酒陈酿期仅 1–3 年、且近年放量，把合计销量塞进"茅台酒基酒×75%"，自然会得到 200%+ 的虚高比值。</div>
+  </div>
+
+  <h4 style="margin:14px 0 10px;color:var(--wine)">修正一：用"五年前总基酒"对"当年总成品销量"（口径可比）</h4>
+  <div class="card">
+    <table>
+      <thead><tr><th>销售年</th><th>当年成品销量</th><th>五年前总基酒(T−5)</th><th>销量 ÷ 五年前总基酒</th></tr></thead>
+      <tbody>
+        <tr><td>2023</td><td>73,274</td><td>70,200 (2018)</td><td>104%</td></tr>
+        <tr><td>2024</td><td>83,333</td><td>75,000 (2019)</td><td>111%</td></tr>
+        <tr><td>2025</td><td>85,104</td><td>75,200 (2020)</td><td>113%</td></tr>
+      </tbody>
+    </table>
+    <div class="note">口径对齐后比值降到 104–113%，但仍高于 75%。原因有二：①系列酒不遵循五年陈酿，透支了更近年份的产量；②见下"修正二"。</div>
+  </div>
+
+  <h4 style="margin:14px 0 10px;color:var(--wine)">修正二：仅看茅台酒（估算，因年报不再单列吨数）</h4>
+  <div class="card">
+    <div class="method">茅台酒成品销量无直接披露，用 <code>茅台酒销量 ≈ 茅台酒营收 ÷ 估算吨均价</code> 粗估（吨均价随直营占比与提价逐年上移，约 230→340 万元/吨不含税）。结果为量级估算，非精确值。</div>
+    <table>
+      <thead><tr><th>年份</th><th>茅台酒营收(亿)</th><th>估算吨均价(万/吨)</th><th>估算茅台酒销量(吨)</th><th>茅台酒基酒(T−5)</th><th>出酒比例(实际÷五年前基酒)</th></tr></thead>
+      <tbody>
+        <tr><td>2021</td><td>934.7</td><td>~230</td><td>~40,600</td><td>39,313</td><td class="pos">~103%</td></tr>
+        <tr><td>2022</td><td>1,078.3</td><td>~250</td><td>~43,100</td><td>42,829</td><td class="pos">~101%</td></tr>
+        <tr><td>2023</td><td>1,265.9</td><td>~290</td><td>~43,700</td><td>49,700</td><td>~88%</td></tr>
+        <tr><td>2024</td><td>1,459.3</td><td>~340</td><td>~42,900</td><td>~49,900</td><td>~86%</td></tr>
+        <tr><td>2025</td><td>1,465.0</td><td>~340</td><td>~43,100</td><td>50,200</td><td>~86%</td></tr>
+      </tbody>
+    </table>
+    <div class="note good"><b>茅台酒真实"出酒比例"约 85%–100%，明显高于 75%。</b>这正好印证老唐在《重估茅台》中的判断：老酒库存已足，公司<b>下调当年基酒的老酒储存比例（从约 25% 降至 ~15%）</b>，等于把可售比例从 75% 提到 ~85%，"每年多挤出 3000–4000 吨可售商品酒"。这是茅台酒能在基酒产量停滞（~5 万吨）下仍维持放量的关键。</div>
+  </div>
+
+  <div class="ans">
+    <h4>直接回答：能不能对应上"五年前基酒 × 75%"？</h4>
+    <p><b>对不上，实际出酒比例更高（约 85%）。</b>①年报口径已变，2021 年起只披露"酒类"合计销量（茅台酒＋系列酒），无法直接套茅台酒的 75% 规则；②即便还原到茅台酒，实际出酒占五年前基酒约 85%–100%，高于 75%——原因是公司主动<b>下调老酒储存比例</b>（老唐《重估茅台》已预判）；③而系列酒陈酿期短、近年放量，使"酒类合计"口径进一步偏离 75%。<b>换句话说：茅台早已不再严守"存 25%、出 75%"，而是靠动用老酒储备来对冲基酒产量的停滞。</b></p>
+  </div>
+  <div class="quote">"只需要提存当年基酒产量的 15% 左右，就足以维持酒库老酒总量不变……这一招，可为未来几年每年增加 3000~4000 吨的可售商品酒。"　——《重估茅台》</div>
+</section>
+
+<div class="foot">
+  <div class="disc"><b>免责声明：</b>本报告为基于公开年报数据与《价值投资实战手册》（唐朝著）所述方法的研究性还原分析，不构成任何证券买卖建议或投资意见。文中"折不含税"统一按 13% 增值税折算；茅台酒销量、吨均价及 2019 年茅台酒基酒等为估算或倒推值，已在文中标注，请以公司正式披露为准。数据由本项目自动从 PDF 年报提取，可能存在口径或提取误差。</div>
+  真实经营还原与产能验证 · 唐朝《表3-15》方法复刻 · 数据区间 2016–2025 · 生成于 2026-07-25
+</div>
+
+</div>
+</body>
+</html>
