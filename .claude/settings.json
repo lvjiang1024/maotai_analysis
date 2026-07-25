@@ -3,7 +3,8 @@
     "allow": [
       "Bash(pip3 install *)",
       "Bash(python3 /Users/lvjiang/Project/茅台/financial_analysis.py)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(gh pr merge *)"
     ]
   }
 }
