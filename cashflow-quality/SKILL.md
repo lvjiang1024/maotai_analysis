@@ -96,10 +96,42 @@ python3 ~/.claude/skills/cashflow-quality/scripts/extract_cashflow.py <年报目
 - `<公司名>_现金流数据.json`：逐年原始科目 + 派生比率，便于复用与复核
 - 图表 JS 数组：由 JSON 转换而来，嵌入 HTML 报告
 
+## 改动脚本后必须跑回归自测
+
+提取逻辑高度依赖各年报表的具体排版，改一处匹配规则很容易在别的年份引发静默错误——
+不是报错，而是悄悄取到相邻科目（如把「营业总收入」当成「营业收入」，或把含少数股东的
+净利润当成归母净利润）。这类错误肉眼几乎看不出来，只有回归测试能拦住。
+
+```bash
+python3 cashflow-quality/tests/test_extraction.py          # 快速：只跑历史出过问题的年份，约 30 秒
+python3 cashflow-quality/tests/test_extraction.py --full   # 完整：25 份年报全跑，约 3 分钟
+```
+
+基准值 `tests/baseline_贵州茅台.json` 逐年与年报原文核对过。测试会：
+
+- 比对 8 个科目，偏差超过 0.015 亿即报错，并指出该年对应的格式陷阱
+- 区分「数值不对」与「完全提取不到」（后者通常意味着定位逻辑被改坏）
+- 检查恒等式 `销售收现 ≥ 营业收入`（含税收现恒高于不含税营收，反了说明取到了母公司报表）
+
+退出码 0/1，可直接用于 CI。改动定位或匹配逻辑后建议跑 `--full`。
+
+基准 PDF 随 maotai_analysis 仓库分发。若技能已装到 `~/.claude/skills`，
+用 `--pdf-dir` 指向仓库里的年报目录：
+
+```bash
+python3 ~/.claude/skills/cashflow-quality/tests/test_extraction.py \
+  --pdf-dir /path/to/maotai_analysis/财报
+```
+
+**新发现格式问题时**，把对应年份补进 `test_extraction.py` 的 `REGRESSION_YEARS`
+并附上一句陷阱说明，让它永久受测试保护。
+
 ## 参考文件
 
 - `scripts/extract_cashflow.py`：提取脚本（通用版，文件头注释记录了全部格式陷阱）
 - `references/charts.md`：四张标准图的 Chart.js 配置与判读话术
+- `tests/test_extraction.py`：回归自测
+- `tests/baseline_贵州茅台.json`：25 年基准值（亿元）
 
 ## 安装为个人技能（可选）
 
