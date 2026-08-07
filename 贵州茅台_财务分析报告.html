@@ -107,6 +107,7 @@
   <button id="btn-core">📊 核心指标</button>
   <button id="btn-growth">🚀 增长分析</button>
   <button id="btn-returns">💎 股东回报</button>
+  <button id="btn-cashflow">💰 现金流质量</button>
   <button id="btn-quarterly">📅 季度追踪</button>
   <button id="btn-detail">📋 数据明细</button>
   <button id="btn-mgmt">💬 管理层观点</button>
@@ -133,6 +134,19 @@
 <div class="section" id="sec-returns">
   <div class="chart-row"><div class="chart-block"><h3>每股收益 EPS（元）</h3><canvas id="chart_eps"></canvas></div><div class="chart-block"><h3>净资产收益率 ROE（%）</h3><canvas id="chart_roe2"></canvas></div></div>
   <div class="chart-row single full"><div class="chart-block"><h3>EPS 增长率 vs ROE</h3><canvas id="chart_eps_roe"></canvas></div></div>
+</div>
+
+<div class="section" id="sec-cashflow">
+  <div class="chart-row single full"><div class="chart-block"><h3>经营活动现金流量净额 vs 净利润（亿元，2001—2025）</h3><canvas id="chart_cf_profit"></canvas></div></div>
+  <div class="chart-row single full"><div class="chart-block"><h3>销售商品、提供劳务收到的现金 vs 营业收入（亿元，2001—2025）</h3><canvas id="chart_cf_sales"></canvas></div></div>
+  <div class="chart-row single full"><div class="chart-block"><h3>收现比：销售收现 ÷ 营业收入（%，2001—2025）</h3><canvas id="chart_cf_ratio"></canvas></div></div>
+  <div class="chart-row single full"><div class="chart-block"><h3>现金余额、资本开支、现金分红、有息负债对比（亿元，2001—2025）</h3><canvas id="chart_cf_balance"></canvas></div></div>
+  <div class="chart-row single full"><div class="chart-block"><p style="font-size:12px;color:#888;margin:0;line-height:1.7">
+    数据来源：2001—2025 年 25 份年度报告的「合并现金流量表」「合并资产负债表」逐年提取。<br>
+    · <b>现金余额</b>统一采用现金流量表「期末现金及现金等价物余额」。2020 年起茅台并表集团财务公司，大量资金列示于「存放中央银行款项」而非「货币资金」，若用货币资金口径会出现失真的断崖，故不采用。2001—2006 年老式报表无该行，回退至资产负债表货币资金期末数。<br>
+    · <b>有息负债</b>＝短期借款＋长期借款＋应付债券＋一年内到期的非流动负债。茅台 25 年间几乎零有息负债（仅 2001 年 1.29 亿及个别年份因并表财务公司产生的零星余额），故该线基本贴合 0 轴。<br>
+    · <b>净利润</b>为归属于母公司股东的净利润；2001—2006 年老式利润表「五、净利润」已扣除少数股东损益，口径一致，并已与次年年报「上期数」逐年勾稽。
+  </p></div></div>
 </div>
 
 <div class="section" id="sec-quarterly">
@@ -252,6 +266,16 @@ const COMP_EQUITY = [341.5, 426.22, 534.3, 639.26, 728.94, 914.52, 1128.39, 1360
 const COMP_EPS = [12.82, 14.58, 13.44, 12.34, 13.31, 21.56, 28.02, 32.8, 37.17, 41.76, 49.93, 59.49, 68.64, 65.66];
 const COMP_ROE = [45.0, 39.43, 31.96, 26.23, 24.44, 32.95, 34.46, 33.09, 31.41, 29.9, 30.26, 34.19, 36.02, 32.53];
 const OCF_ANNUAL = [119.21, 126.55, 126.33, 174.36, 374.51, 221.53, 413.85, 452.11, 516.69, 640.29, 366.99, 665.93, 924.64, 615.22];
+const CF_Y = ["2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"];
+const CF_REV = [16.18, 18.35, 24.01, 30.1, 39.31, 48.96, 72.37, 82.42, 96.7, 116.33, 184.02, 264.55, 309.22, 315.74, 326.6, 388.62, 582.18, 736.39, 854.3, 949.15, 1061.9, 1241.0, 1476.94, 1708.99, 1688.38];
+const CF_PROFIT = [3.28, 3.77, 5.87, 8.21, 11.19, 15.04, 28.31, 37.99, 43.12, 50.51, 87.63, 133.08, 151.37, 153.5, 155.03, 167.18, 270.79, 352.04, 412.06, 466.97, 524.6, 627.16, 747.34, 862.28, 823.2];
+const CF_OCF = [0.42, 4.35, 9.42, 9.76, 16.94, 21.05, 17.43, 52.47, 42.24, 62.01, 101.49, 119.21, 126.55, 126.33, 174.36, 374.51, 221.53, 413.85, 452.11, 516.69, 640.29, 366.99, 665.93, 924.64, 615.22];
+const CF_SALESCASH = [18.0, 22.89, 30.58, 36.46, 49.77, 61.41, 74.38, 112.75, 117.56, 149.39, 236.59, 289.12, 332.34, 333.85, 370.83, 610.13, 644.21, 842.69, 949.8, 1070.24, 1193.21, 1406.92, 1637.0, 1826.45, 1839.9];
+const CF_CAPEX = [3.32, 4.67, 3.35, 3.55, 5.41, 7.37, 7.72, 10.11, 13.57, 17.32, 21.85, 42.12, 54.06, 44.31, 20.61, 10.19, 11.25, 16.07, 31.49, 20.9, 34.09, 53.07, 26.2, 46.79, 31.28];
+const CF_DIV = [1.03, 1.39, 0.47, 0.62, 1.92, 7.6, 7.07, 8.85, 12.35, 12.93, 26.62, 43.07, 73.92, 51.22, 55.54, 83.51, 89.05, 164.41, 201.17, 240.91, 264.76, 573.7, 587.55, 709.51, 672.42];
+const CF_CASH = [19.56, 17.8, 23.4, 28.98, 38.92, 44.63, 47.23, 80.94, 97.43, 128.88, 182.55, 220.62, 219.92, 249.97, 347.8, 627.95, 749.28, 982.43, 1210.04, 1467.41, 1786.41, 1523.79, 1503.6, 1699.7, 1264.26];
+const CF_DEBT = [1.29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.63, 0.63, 0, 0, 0, 0, 0, 1.04, 1.09, 0.57, 1.12, 0.44];
+const CF_CASHRATIO = CF_SALESCASH.map(function(v, i) { return v / CF_REV[i] * 100; });
 const REV_G = REV_V.map(function(v,i){return i===0?null:((v-REV_V[i-1])/REV_V[i-1]*100);});
 const REV_G_Y = REV_Y.slice(1);
 const REV_G_V = REV_G.slice(1).filter(function(v){return v!==null;});
@@ -273,12 +297,12 @@ function showTab(id) {
   document.getElementById('sec-' + id).classList.add('active');
   document.getElementById('btn-' + id).classList.add('active');
   if (!cr[id]) { cr[id] = true;
-    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, quarterly: initQuarterly, mgmt: initMgmtTimeline };
+    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, cashflow: initCashflow, quarterly: initQuarterly, mgmt: initMgmtTimeline };
     if (f[id]) f[id]();
   }
 }
 
-['overview','core','growth','returns','quarterly','detail','mgmt'].forEach(function(id) {
+['overview','core','growth','returns','cashflow','quarterly','detail','mgmt'].forEach(function(id) {
   document.getElementById('btn-' + id).addEventListener('click', function() { showTab(id); });
 });
 
@@ -344,6 +368,36 @@ function initReturns() {
   new Chart(document.getElementById('chart_eps_roe'), { type: 'bar',
     data: { labels: EPS_G_Y, datasets: [{ label: 'EPS增速%', data: EPS_G_V, backgroundColor: C[0] + '99', yAxisID: 'y' },{ label: 'ROE%', data: COMP_ROE.slice(1), type: 'line', borderColor: C[1], tension: 0.3, pointRadius: 3, yAxisID: 'y1', borderWidth: 3 }] },
     options: { responsive: true, scales: { y: { type: 'linear', position: 'left', title: { display: true, text: 'EPS增速%' } }, y1: { type: 'linear', position: 'right', title: { display: true, text: 'ROE%' }, grid: { drawOnChartArea: false } } }, plugins: { legend: { position: 'top' } } }
+  });
+}
+
+function initCashflow() {
+  new Chart(document.getElementById('chart_cf_profit'), { type: 'line',
+    data: { labels: CF_Y, datasets: [
+      { label: '净利润(亿)', data: CF_PROFIT, borderColor: C[1], borderDash: [6,4], tension: 0.2, pointRadius: 3, borderWidth: 2, fill: false },
+      { label: '经营活动现金流量净额(亿)', data: CF_OCF, borderColor: C[2], tension: 0.2, pointRadius: 3, borderWidth: 3, fill: false }
+    ] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } } } }
+  });
+  new Chart(document.getElementById('chart_cf_sales'), { type: 'line',
+    data: { labels: CF_Y, datasets: [
+      { label: '销售商品、提供劳务收到的现金(亿)', data: CF_SALESCASH, borderColor: C[0], borderDash: [6,4], tension: 0.2, pointRadius: 3, borderWidth: 2, fill: false },
+      { label: '营业收入(亿)', data: CF_REV, borderColor: C[2], tension: 0.2, pointRadius: 3, borderWidth: 3, fill: false }
+    ] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } } } }
+  });
+  new Chart(document.getElementById('chart_cf_ratio'), { type: 'bar',
+    data: { labels: CF_Y, datasets: [{ label: '收现比%', data: CF_CASHRATIO, backgroundColor: CF_CASHRATIO.map(function(v) { return v >= 100 ? C[0] + '99' : C[1] + '99'; }) }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: '收现比 %' }, suggestedMin: 90 } } }
+  });
+  new Chart(document.getElementById('chart_cf_balance'), { type: 'line',
+    data: { labels: CF_Y, datasets: [
+      { label: '现金余额(亿)', data: CF_CASH, borderColor: C[2], tension: 0.2, pointRadius: 3, borderWidth: 3, fill: false },
+      { label: '资本开支(亿)', data: CF_CAPEX, borderColor: C[3], tension: 0.2, pointRadius: 2, borderWidth: 2, fill: false },
+      { label: '现金分红(亿)', data: CF_DIV, borderColor: C[0], borderDash: [6,4], tension: 0.2, pointRadius: 3, borderWidth: 2, fill: false },
+      { label: '有息负债(亿)', data: CF_DEBT, borderColor: C[1], tension: 0.2, pointRadius: 1, borderWidth: 2, fill: false }
+    ] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } } } }
   });
 }
 
