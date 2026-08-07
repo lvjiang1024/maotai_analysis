@@ -57,6 +57,20 @@ python3 financial_analysis.py
 | 财务数据.xlsx | Excel 数据（原始数据 + 增长率两个 sheet） |
 | charts/ | 4 张 PNG 图表（300dpi） |
 
+## 可复用能力：现金流质量分析
+
+`cashflow-quality/` 是一个独立技能，用于验证账面利润有没有真金白银支撑——
+提取经营现金流、销售收现、资本开支、现金分红、现金余额、有息负债，
+计算收现比与净现比，并生成 4 张图表。可用于任何 A 股公司：
+
+```bash
+python3 cashflow-quality/scripts/extract_cashflow.py <年报目录> --company <公司名>
+```
+
+`cashflow-quality/SKILL.md` 里整理了 9 个跨年度报表格式陷阱（列序颠倒、
+营业总收入 ≠ 营业收入、财务公司并表导致的现金口径断层等），换公司做提取前建议先读。
+执行 `cp -R cashflow-quality ~/.claude/skills/` 可装为个人技能，所有项目自动可用。
+
 ## 数据提取说明
 
 脚本从 PDF 财报第 5-9 页的表格中提取以下中国上市公司标准财务指标：
