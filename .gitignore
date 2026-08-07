@@ -20,6 +20,8 @@ __pycache__/
 !贵州茅台_quarterly_data.json
 !贵州茅台_mgmt_data.json
 !贵州茅台_现金流数据.json
+# 回归自测基准值
+!cashflow-quality/tests/*.json
 
 # 旧输出（已被新报告替代）
 财务分析报告.html

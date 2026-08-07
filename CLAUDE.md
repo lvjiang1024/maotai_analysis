@@ -71,6 +71,13 @@ python3 cashflow-quality/scripts/extract_cashflow.py <年报目录> --company <�
 营业总收入 ≠ 营业收入、财务公司并表导致的现金口径断层等），换公司做提取前建议先读。
 执行 `cp -R cashflow-quality ~/.claude/skills/` 可装为个人技能，所有项目自动可用。
 
+**改动提取脚本后务必跑回归自测**，这类错误往往不报错、只是悄悄取到相邻科目：
+
+```bash
+python3 cashflow-quality/tests/test_extraction.py          # 快速，约 30 秒
+python3 cashflow-quality/tests/test_extraction.py --full   # 25 份年报全跑，约 3 分钟
+```
+
 ## 数据提取说明
 
 脚本从 PDF 财报第 5-9 页的表格中提取以下中国上市公司标准财务指标：
