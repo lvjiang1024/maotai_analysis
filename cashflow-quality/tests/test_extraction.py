@@ -25,6 +25,16 @@ REPO_ROOT = SKILL_DIR.parent
 sys.path.insert(0, str(SKILL_DIR / "scripts"))
 
 # 年份 -> 该年暴露的格式陷阱（改动相关逻辑时优先看这些年）
+# 合并口径守卫：(年份, 报告期, 科目) -> 该期「母公司」报表中同名科目的值（亿元）。
+# 母公司口径与合并口径差异巨大（茅台 2019 母公司营收仅 277.67 亿，合并 854.30 亿），
+# 一旦定位逻辑退化到母公司报表，这里会立刻报错。
+# 这些值取自各期母公司报表原文，与合并值一并人工核对过。
+PARENT_VALUES = {
+    (2019, "年报", "营业收入"): 277.67,
+    (2019, "年报", "归母净利润"): 312.85,   # 母公司「四、净利润」
+    (2026, "半年报", "货币资金"): 615.97,
+}
+
 REGRESSION_YEARS = {
     2001: "老式资产负债表列序为「年初数 期末数」，与新式相反",
     2004: "表格布局致 extract_text 读不出连续科目名，文本预筛选假阴性",
@@ -158,6 +168,30 @@ def main():
             if e["销售收现"] < e["营业收入"]:
                 viol.append(y)
     print("恒等式 销售收现 ≥ 营业收入：", "✅ 全部满足" if not viol else f"❌ {viol}")
+
+    # 合并口径守卫：提取值不得等于母公司报表的同名科目值
+    if not a.years:
+        pfound = dict(discover(pdf_dir, ("年报",)))
+        pfound.update(discover(pdf_dir, ("一季报", "半年报", "三季报")))
+        hits, cache = [], {}
+        for (yy, pp, field), pval in PARENT_VALUES.items():
+            k = (yy, pp)
+            if k not in pfound:
+                continue
+            if k not in cache:
+                g = extract(pfound[k], yy, pp)
+                g["现金余额"] = g.get("期末现金") or g.get("货币资金")
+                cache[k] = g
+            got = cache[k].get(field)
+            if got is None:
+                continue
+            got = round(got / 1e8, 2)
+            if abs(got - pval) <= TOL:
+                hits.append(f"{yy}{pp} {field} = {got}（母公司值！应取合并）")
+        print("合并口径守卫（不得取到母公司值）：",
+              "✅ 全部为合并口径" if not hits else "❌ " + "；".join(hits))
+        if hits:
+            failures.append(("合并口径", hits))
 
     # 累计口径自洽：Q1 ≤ H1 ≤ Q3 ≤ 全年。
     # 这条能抓住「季报取到单季度值」——茅台既有数据 2021 起的三季报存的是
