@@ -128,17 +128,25 @@ MERGED_TITLE = {"bs": "合并资产负债表", "is": "合并利润表", "cf": "�
 PARENT_TITLE = {"bs": "母公司资产负债表", "is": "母公司利润表", "cf": "母公司现金流量表"}
 
 
+def _cache(pdf):
+    """挂在 pdf 对象上的缓存。标题扫描与表格解析代价高，且同一份 PDF 内会被反复调用。"""
+    if not hasattr(pdf, "_cfq_cache"):
+        pdf._cfq_cache = {}
+    return pdf._cfq_cache
+
+
 def title_pages(pdf, title):
     """标题出现的全部页码。标题多为粗体，需先做重复字符折叠。
 
     返回全部而非首个：目录、审计报告、附注里都可能出现同名文字，
     首个命中往往不是真正的报表页，须由调用方逐个校验。
     """
-    hits = []
-    for i, page in enumerate(pdf.pages):
-        if title in dedupe(clean(page.extract_text() or "")):
-            hits.append(i)
-    return hits
+    c = _cache(pdf)
+    key = ("title", title)
+    if key not in c:
+        c[key] = [i for i, page in enumerate(pdf.pages)
+                  if title in dedupe(clean(page.extract_text() or ""))]
+    return c[key]
 
 
 def merged_start(pdf, kind):
@@ -148,9 +156,27 @@ def merged_start(pdf, kind):
 
 
 def parent_start(pdf, kind):
-    """母公司报表起始页，用作合并报表的读取上界。"""
-    hits = title_pages(pdf, PARENT_TITLE[kind])
-    return hits[0] if hits else None
+    """母公司报表起始页，用作合并报表的读取上界。
+
+    同样要做锚点行校验：「母公司利润表」等字样也出现在附注里
+    （茅台 2019 年报第 48 页附注即提到该表名），若把附注页当成母公司报表起点，
+    上界会被压到合并报表中间，合并数据被提前截断。
+    真正的母公司报表首页（或其次页）必含该报表的特征科目行。
+    """
+    c = _cache(pdf)
+    key = ("parent", kind)
+    if key in c:
+        return c[key]
+    found = None
+    for p in title_pages(pdf, PARENT_TITLE[kind]):
+        for i in (p, p + 1):
+            if i < len(pdf.pages) and _has_anchor(page_rows(pdf, i), kind):
+                found = p
+                break
+        if found is not None:
+            break
+    c[key] = found
+    return found
 
 
 def find_statement(pdf, needle, skip_head=SKIP_HEAD):
