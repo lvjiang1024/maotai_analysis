@@ -70,7 +70,7 @@ def main():
     except ImportError as e:
         sys.exit(f"无法导入提取脚本：{e}")
 
-    found = discover(pdf_dir)
+    found = {k[0]: v for k, v in discover(pdf_dir, ("年报",)).items()}
     if a.years:
         years = [y for y in a.years if y in found]
     elif a.full:
@@ -116,6 +116,38 @@ def main():
             note = f"  （{REGRESSION_YEARS[y]}）" if y in REGRESSION_YEARS and not a.full else ""
             print(f"  {y}  ✅{note}")
 
+    # ── 季报／半年报（累计口径）──
+    qpath = TESTS_DIR / "baseline_贵州茅台_季报.json"
+    cum_rev = {}          # (年份, 报告期) -> 营业收入(亿)，供后面的单调性检查复用
+    if qpath.exists() and not a.years:
+        qbase = json.loads(qpath.read_text(encoding="utf-8"))
+        qfound = discover(pdf_dir, ("一季报", "半年报", "三季报"))
+        print("\n季报／半年报（年初至报告期末累计口径）：")
+        for exp in qbase["数据"]:
+            k = (exp["年份"], exp["报告期"])
+            if k not in qfound:
+                continue
+            got = extract(qfound[k], k[0], k[1])
+            got["现金余额"] = got.get("期末现金") or got.get("货币资金")
+            if got.get("营业收入"):
+                cum_rev[k] = got["营业收入"] / 1e8
+            bad = []
+            # 累计列序号是季报最关键的断言：取错列会得到单季度值而非累计值
+            if exp.get("累计列序号") is not None and got.get("累计列序号") != exp["累计列序号"]:
+                bad.append(f"累计列序号 期望 {exp['累计列序号']} 实得 {got.get('累计列序号')}")
+            for f in [x for x in exp if x not in ("年份", "报告期", "累计列序号")]:
+                e, g = exp[f], got.get(f)
+                g = None if g is None else round(g / 1e8, 2)
+                if e is None and g is None:
+                    continue
+                if g is None or e is None or abs(e - g) > TOL:
+                    bad.append(f"{f} 期望 {e} 实得 {g}")
+            if bad:
+                failures.append((k, bad))
+                print(f"  {k[0]} {k[1]}  ❌  " + "；".join(bad))
+            else:
+                print(f"  {k[0]} {k[1]}  ✅  （累计列序号 {exp.get('累计列序号')}）")
+
     # 不依赖基准的恒等式检查：卖货收到的现金含增值税，恒应 >= 不含税营收。
     # 若某年反了，通常是取到了母公司报表而非合并报表。
     print()
@@ -126,6 +158,28 @@ def main():
             if e["销售收现"] < e["营业收入"]:
                 viol.append(y)
     print("恒等式 销售收现 ≥ 营业收入：", "✅ 全部满足" if not viol else f"❌ {viol}")
+
+    # 累计口径自洽：Q1 ≤ H1 ≤ Q3 ≤ 全年。
+    # 这条能抓住「季报取到单季度值」——茅台既有数据 2021 起的三季报存的是
+    # 7-9 月单季度，与 2020 年前的 1-9 月累计混在同一条曲线上，
+    # 表现为 2020→2021 从 672 亿断崖跌到 256 亿，看着像崩盘其实是换了口径。
+    if cum_rev:
+        chain, broken = {}, []
+        for (yy, pp), v in cum_rev.items():   # 复用上一段的提取结果，不重复读 PDF
+            chain.setdefault(yy, {})[pp] = v
+        for yy, d in sorted(chain.items()):
+            seq = [d.get(k) for k in ("一季报", "半年报", "三季报")]
+            seq = [(k, v) for k, v in zip(("Q1", "H1", "Q3"), seq) if v]
+            fy = expected.get(yy, {}).get("营业收入")
+            if fy:
+                seq.append(("全年", fy))
+            for (n1, v1), (n2, v2) in zip(seq, seq[1:]):
+                if v1 > v2 + TOL:
+                    broken.append(f"{yy} {n1}({v1:,.2f}) > {n2}({v2:,.2f})")
+        print("累计口径单调性 Q1≤H1≤Q3≤全年：",
+              "✅ 全部满足" if not broken else "❌ " + "；".join(broken))
+        if broken:
+            failures.append(("累计口径", broken))
 
     print()
     if failures:
