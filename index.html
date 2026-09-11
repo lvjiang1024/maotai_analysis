@@ -379,7 +379,12 @@
       <div class="kpi"><div class="n">18.0<span style="font-size:16px">倍</span></div><div class="l">扣现金后经营性 PE<br><span style="color:var(--muted)">表观 19.0 倍</span></div></div>
     </div>
 
-    <h4 style="margin:6px 0 10px;color:var(--wine)">① 净现金测算（2026H1）</h4>
+    <h4 style="margin:6px 0 10px;color:var(--wine)">① 净现金 19 年走势（2007—2025 ＋ 2026H1）</h4>
+    <div style="position:relative;height:340px;margin-bottom:8px"><canvas id="chart_netcash"></canvas></div>
+    <div class="note warn"><b>净现金在 2021 年见顶后停滞。</b>2007—2021 年净现金从 25 亿增至 1,132 亿（年化 <b>+30%</b>），但 2022—2025 四年<b>净减 98 亿</b>。原因不是不赚钱——同期累计归母净利 3,060 亿——而是<b>分红率从 50% 跃升至 83%</b>（2022 年因特别分红达 91%），四年累计分红 2,543 亿。扣掉分红与资本开支 157 亿后仅留存 359 亿，再计入少数股东权益增加等因素，净现金不增反降。<b>2026H1 回升至 1,348 亿主要来自财务公司吸收集团存款，非主业积累</b>（详见下方口径说明）。</div>
+    <div class="note">2001—2006 未纳入：老式资产负债表列序为「年初数 期末数」，自动判定不稳定，该 6 个年度未能通过会计恒等式校验，故剔除而非给出未经验证的数字。2007—2025 全部通过<b>双重校验</b>：资产总计 = 负债合计 ＋ 所有者权益合计，且资产总计与年报披露的总资产逐年一致。</div>
+
+    <h4 style="margin:6px 0 10px;color:var(--wine)">② 净现金测算（2026H1）</h4>
     <table>
       <thead><tr><th>项目</th><th>金额(亿)</th><th>说明</th></tr></thead>
       <tbody>
@@ -393,7 +398,7 @@
     </table>
     <div class="note">口径对照：若仅减<b>有息负债</b>（业界通行的「净现金」算法）为 <b>1,925.50 亿</b>（154.0 元/股）；若减全部负债但不扣少数股东权益为 <b>1,456.53 亿</b>（116.5 元/股）。三者差异来自「负债」和「归属」两处口径选择，本表采用最保守的一种。</div>
 
-    <h4 style="margin:18px 0 10px;color:var(--wine)">② 这些现金创造了多少利润（2025 年报）</h4>
+    <h4 style="margin:18px 0 10px;color:var(--wine)">③ 这些现金创造了多少利润（2025 年报）</h4>
     <table>
       <thead><tr><th>项目</th><th>金额(亿)</th></tr></thead>
       <tbody>
@@ -405,7 +410,7 @@
       </tbody>
     </table>
 
-    <h4 style="margin:18px 0 10px;color:var(--wine)">③ 扣现金后的经营性估值（现价 1,250 元，市值 15,626 亿）</h4>
+    <h4 style="margin:18px 0 10px;color:var(--wine)">④ 扣现金后的经营性估值（现价 1,250 元，市值 15,626 亿）</h4>
     <table>
       <thead><tr><th>口径</th><th>企业价值 EV(亿)</th><th>经营性 PE</th></tr></thead>
       <tbody>
@@ -743,6 +748,9 @@ const CF_DIV = [1.03, 1.39, 0.47, 0.62, 1.92, 7.6, 7.07, 8.85, 12.35, 12.93, 26.
 const CF_CASH = [19.56, 17.8, 23.4, 28.98, 38.92, 44.63, 47.23, 80.94, 97.43, 128.88, 182.55, 220.62, 219.92, 249.97, 347.8, 627.95, 749.28, 982.43, 1210.04, 1467.41, 1786.41, 1523.79, 1503.6, 1699.7, 1264.26];
 const CF_DEBT = [1.29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.63, 0.63, 0, 0, 0, 0, 0, 1.04, 1.09, 0.57, 1.12, 0.44];
 const CF_CASHRATIO = CF_SALESCASH.map(function(v, i) { return v / CF_REV[i] * 100; });
+const NC_Y = ["2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026H1"];
+const NC_V = [25.3,36.3,44.7,57.8,84.1,112.6,92.1,126.2,124.9,227.8,318.0,512.6,740.0,946.9,1131.8,980.2,1011.8,1071.1,1034.1,1348.1];
+const NC_DIV = [25.0,23.3,28.6,25.6,30.4,32.4,48.8,33.4,35.8,49.9,32.9,46.7,48.8,51.6,50.5,91.5,78.6,82.3,81.7,null];
 const REV_G = REV_V.map(function(v,i){return i===0?null:((v-REV_V[i-1])/REV_V[i-1]*100);});
 const REV_G_Y = REV_Y.slice(1);
 const REV_G_V = REV_G.slice(1).filter(function(v){return v!==null;});
@@ -764,7 +772,7 @@ function showTab(id) {
   document.getElementById('sec-' + id).classList.add('active');
   document.getElementById('btn-' + id).classList.add('active');
   if (!cr[id]) { cr[id] = true;
-    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, cashflow: initCashflow, quarterly: initQuarterly, mgmt: initMgmtTimeline };
+    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, cashflow: initCashflow, valuation: initValuation, quarterly: initQuarterly, mgmt: initMgmtTimeline };
     if (f[id]) f[id]();
   }
 }
@@ -865,6 +873,25 @@ function initCashflow() {
       { label: '有息负债(亿)', data: CF_DEBT, borderColor: C[1], tension: 0.2, pointRadius: 1, borderWidth: 2, fill: false }
     ] },
     options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } } } }
+  });
+}
+
+function initValuation() {
+  new Chart(document.getElementById('chart_netcash'), {
+    data: { labels: NC_Y, datasets: [
+      { type: 'bar', label: '净现金(亿)', data: NC_V, yAxisID: 'y',
+        backgroundColor: NC_Y.map(function(l){ return l === '2026H1' ? '#7a1f2b99' : '#b8860b99'; }),
+        borderColor: NC_Y.map(function(l){ return l === '2026H1' ? '#7a1f2b' : '#b8860b'; }), borderWidth: 1 },
+      { type: 'line', label: '分红率(%)', data: NC_DIV, yAxisID: 'y1',
+        borderColor: '#c0392b', borderWidth: 2, pointRadius: 3, tension: 0.25, spanGaps: false, fill: false }
+    ] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        y:  { position: 'left',  title: { display: true, text: '净现金（亿元）' } },
+        y1: { position: 'right', title: { display: true, text: '分红率 %' }, min: 0, max: 100,
+              grid: { drawOnChartArea: false } }
+      } }
   });
 }
 
