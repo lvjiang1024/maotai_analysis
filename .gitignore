@@ -21,6 +21,7 @@ __pycache__/
 !贵州茅台_mgmt_data.json
 !贵州茅台_现金流数据.json
 !贵州茅台_净现金数据.json
+!贵州茅台_销量吨价数据.json
 # 回归自测基准值
 !cashflow-quality/tests/*.json
 
