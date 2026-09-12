@@ -621,6 +621,9 @@
 <tr><td>2023</td><td>1,476.94</td><td>747.34</td><td>2,727.00</td><td>2,156.69</td><td>59.49</td><td>34.19%</td><td>665.93</td><td><span class="tag-src">PDF</span></td></tr>
 <tr><td>2024</td><td>1,708.99</td><td>862.28</td><td>2,989.45</td><td>2,331.06</td><td>68.64</td><td>36.02%</td><td>924.64</td><td><span class="tag-src">PDF</span></td></tr>
 <tr><td>2025</td><td>1,688.38</td><td>823.20</td><td>3,038.35</td><td>2,446.38</td><td>65.66</td><td>32.53%</td><td>615.22</td><td><span class="tag-src">PDF</span></td></tr></tbody></table></div></div>
+  <div class="chart-row"><div class="chart-block"><h3>吨价走势（万元/吨，2016—2025）</h3><canvas id="chart_vp_price"></canvas></div><div class="chart-block"><h3>销量走势（吨，2016—2025）</h3><canvas id="chart_vp_vol"></canvas></div></div>
+  <div class="chart-row single full"><div class="chart-block"><p style="font-size:13px;color:#555;margin:0;line-height:1.8"><b>吨价在 2024 年见顶，2025 年首次回落。</b>茅台酒吨价 2016—2024 由 160.2 万元/吨升至 314.4 万元/吨（＋96%），2025 年微降至 <b>313.4</b>（−0.3%），为该序列首次下滑；系列酒回落更明显，由 66.9 降至 <b>58.1</b>（<b>−13.1%</b>）。同期两者销量仍在增长（茅台酒 46,413→46,751 吨，系列酒 36,920→38,353 吨），即 <b>2025 年是"以量补价"</b>——靠多卖酒维持收入，单位售价下行。系列酒吨价跌幅远大于茅台酒，指向产品结构下移（低价位产品放量）。</p></div></div>
+
   <div class="chart-block"><h3>📋 销量与吨价（分产品）</h3><div class="table-scroll"><table class="data-table"><thead><tr><th rowspan="2">年份</th><th colspan="3">茅台酒</th><th colspan="3">系列酒</th></tr><tr><th>销售额(亿元)</th><th>销量(吨)</th><th>吨价(万元/吨)</th><th>销售额(亿元)</th><th>销量(吨)</th><th>吨价(万元/吨)</th></tr></thead><tbody>
 <tr><td>2016</td><td>367.14</td><td>22,917.66</td><td>160.2</td><td>21.27</td><td>14,026.70</td><td>15.2</td></tr>
 <tr><td>2017</td><td>523.94</td><td>30,205.52</td><td>173.5</td><td>57.74</td><td>29,902.84</td><td>19.3</td></tr>
@@ -764,6 +767,11 @@ const CF_CASHRATIO = CF_SALESCASH.map(function(v, i) { return v / CF_REV[i] * 10
 const NC_Y = ["2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025","2026H1"];
 const NC_V = [25.3,36.3,44.7,57.8,84.1,112.6,92.1,126.2,124.9,227.8,318.0,512.6,740.0,946.9,1131.8,980.2,1011.8,1071.1,1034.1,1348.1];
 const NC_DIV = [25.0,23.3,28.6,25.6,30.4,32.4,48.8,33.4,35.8,49.9,32.9,46.7,48.8,51.6,50.5,91.5,78.6,82.3,81.7,null];
+const VP_Y = ["2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+const VP_MP = [160.2,173.5,201.7,219.3,247.2,257.8,284.5,300.6,314.4,313.4];
+const VP_SP = [15.2,19.3,27.1,31.7,33.6,41.7,52.6,66.2,66.9,58.1];
+const VP_MV = [22917.66,30205.52,32463.95,34562.46,34312.53,36261.31,37901.39,42109.50,46412.95,46750.66];
+const VP_SV = [14026.70,29902.84,29774.46,30082.84,29743.35,30177.38,30274.93,31164.54,36919.81,38353.48];
 const REV_G = REV_V.map(function(v,i){return i===0?null:((v-REV_V[i-1])/REV_V[i-1]*100);});
 const REV_G_Y = REV_Y.slice(1);
 const REV_G_V = REV_G.slice(1).filter(function(v){return v!==null;});
@@ -785,7 +793,7 @@ function showTab(id) {
   document.getElementById('sec-' + id).classList.add('active');
   document.getElementById('btn-' + id).classList.add('active');
   if (!cr[id]) { cr[id] = true;
-    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, cashflow: initCashflow, valuation: initValuation, quarterly: initQuarterly, mgmt: initMgmtTimeline };
+    var f = { overview: initOverview, core: initCore, growth: initGrowth, returns: initReturns, cashflow: initCashflow, valuation: initValuation, quarterly: initQuarterly, detail: initDetail, mgmt: initMgmtTimeline };
     if (f[id]) f[id]();
   }
 }
@@ -886,6 +894,29 @@ function initCashflow() {
       { label: '有息负债(亿)', data: CF_DEBT, borderColor: C[1], tension: 0.2, pointRadius: 1, borderWidth: 2, fill: false }
     ] },
     options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '亿元' } } } }
+  });
+}
+
+function initDetail() {
+  new Chart(document.getElementById('chart_vp_price'), { type: 'line',
+    data: { labels: VP_Y, datasets: [
+      { label: '茅台酒吨价(万元/吨)', data: VP_MP, borderColor: C[1], backgroundColor: C[1] + '15',
+        tension: 0.25, pointRadius: 3, borderWidth: 3, fill: false, yAxisID: 'y' },
+      { label: '系列酒吨价(万元/吨)', data: VP_SP, borderColor: C[0], borderDash: [6,4],
+        tension: 0.25, pointRadius: 3, borderWidth: 2, fill: false, yAxisID: 'y1' }
+    ] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } },
+      scales: { y:  { position: 'left',  title: { display: true, text: '茅台酒 万元/吨' } },
+                y1: { position: 'right', title: { display: true, text: '系列酒 万元/吨' },
+                      grid: { drawOnChartArea: false } } } }
+  });
+  new Chart(document.getElementById('chart_vp_vol'), { type: 'bar',
+    data: { labels: VP_Y, datasets: [
+      { label: '茅台酒销量(吨)', data: VP_MV, backgroundColor: C[1] + '99' },
+      { label: '系列酒销量(吨)', data: VP_SV, backgroundColor: C[0] + '99' }
+    ] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } },
+      scales: { y: { title: { display: true, text: '吨' } } } }
   });
 }
 
